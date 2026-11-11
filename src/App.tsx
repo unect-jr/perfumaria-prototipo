@@ -17,7 +17,6 @@ const router = createBrowserRouter([
       { path: 'produtos/novo', element: <ProdutoNovo />, handle: { title: 'Novo produto' } satisfies RouteHandle },
       { path: 'produtos/:id', handle: { title: 'Produto' } satisfies RouteHandle },
       { path: 'movimentacoes', element: <Movimentacoes />, handle: { title: 'Movimentações' } satisfies RouteHandle },
-      { path: 'registrar', handle: { title: 'Registrar movimentação' } satisfies RouteHandle },
     ],
   },
 ])

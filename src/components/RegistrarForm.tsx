@@ -11,6 +11,7 @@ import { CurrencyField } from './ui/CurrencyField'
 import { Icon } from './ui/Icon'
 import { Segmented } from './ui/Segmented'
 import { SelectField } from './ui/SelectField'
+import { Stepper } from './ui/Stepper'
 import { TextField } from './ui/TextField'
 
 type Campo = 'produto' | 'quantidade' | 'valor' | 'data'
@@ -138,7 +139,7 @@ export function RegistrarForm({
   }
 
   return (
-    <form noValidate onSubmit={salvar} className="flex flex-col gap-5">
+    <form noValidate onSubmit={salvar} className="flex flex-1 flex-col gap-3.5 md:flex-none md:gap-5">
       <Segmented label="Tipo de movimentação" opcoes={TIPOS} valor={tipo} onChange={mudarTipo} />
 
       <SelectField
@@ -154,21 +155,32 @@ export function RegistrarForm({
         data-autofocus={produtoIdInicial === '' ? '' : undefined}
       />
 
-      <div className="flex items-start gap-4">
-        <TextField
-          id={campoId('quantidade')}
+      <div className="flex flex-col gap-3.5 md:flex-row md:items-start md:gap-4">
+        <Stepper
+          id={`${campoId('quantidade')}-stepper`}
           label="Quantidade"
-          placeholder="Ex.: 2"
-          inputMode="numeric"
-          autoComplete="off"
-          value={quantidade}
-          onChange={(e) => setQuantidade(apenasDigitos(e.target.value))}
-          onBlur={tocar('quantidade')}
+          valor={Math.max(qtd, 1)}
+          max={venda && item ? Math.max(posicao.estoque, 1) : undefined}
+          onChange={(n) => setQuantidade(String(n))}
           error={erroVisivel('quantidade')}
           warning={avisoQuantidade}
-          className="min-w-0 flex-1"
-          data-autofocus={produtoIdInicial === '' ? undefined : ''}
+          className="md:hidden"
         />
+        <div className="hidden md:block md:min-w-0 md:flex-1">
+          <TextField
+            id={campoId('quantidade')}
+            label="Quantidade"
+            placeholder="Ex.: 2"
+            inputMode="numeric"
+            autoComplete="off"
+            value={quantidade}
+            onChange={(e) => setQuantidade(apenasDigitos(e.target.value))}
+            onBlur={tocar('quantidade')}
+            error={erroVisivel('quantidade')}
+            warning={avisoQuantidade}
+            data-autofocus={produtoIdInicial === '' ? undefined : ''}
+          />
+        </div>
         <CurrencyField
           id={campoId('valor')}
           label={venda ? 'Valor de venda (un.)' : 'Valor de compra (un.)'}
@@ -178,22 +190,24 @@ export function RegistrarForm({
           onBlur={tocar('valor')}
           error={erroVisivel('valor')}
           warning={avisoValor}
-          className="min-w-0 flex-1"
+          className="min-w-0 md:flex-1"
         />
       </div>
 
-      <TextField
-        id={campoId('data')}
-        label="Data"
-        type="date"
-        max={hoje}
-        value={data}
-        onChange={(e) => setData(e.target.value)}
-        onBlur={tocar('data')}
-        error={erroVisivel('data')}
-        inputClassName="[&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:size-full [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:opacity-0"
-        icon={<Icon name="calendario" size={16} className="pointer-events-none text-fg-muted" />}
-      />
+      <div className="hidden md:block">
+        <TextField
+          id={campoId('data')}
+          label="Data"
+          type="date"
+          max={hoje}
+          value={data}
+          onChange={(e) => setData(e.target.value)}
+          onBlur={tocar('data')}
+          error={erroVisivel('data')}
+          inputClassName="[&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:size-full [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:opacity-0"
+          icon={<Icon name="calendario" size={16} className="pointer-events-none text-fg-muted" />}
+        />
+      </div>
 
       {venda ? (
         <MovimentacaoResumo
@@ -208,11 +222,13 @@ export function RegistrarForm({
         />
       )}
 
-      <div className="flex justify-end gap-3">
-        <Button variant="secundario" onClick={onCancelar}>
-          Cancelar
-        </Button>
-        <Button type="submit" icon="check" disabled={estoqueInsuficiente}>
+      <div className="mt-auto flex gap-3 pt-3.5 md:mt-0 md:justify-end md:pt-0">
+        <div className="hidden md:block">
+          <Button variant="secundario" onClick={onCancelar}>
+            Cancelar
+          </Button>
+        </div>
+        <Button type="submit" icon="check" disabled={estoqueInsuficiente} className="w-full md:w-auto">
           {venda ? 'Salvar venda' : 'Salvar compra'}
         </Button>
       </div>

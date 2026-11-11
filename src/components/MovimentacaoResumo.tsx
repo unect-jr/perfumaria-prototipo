@@ -14,16 +14,32 @@ function formatEstoqueApos(valor: number): string {
   return arredondado < 0 ? `Faltam ${formatNumber(-arredondado)} un.` : formatUnidades(arredondado)
 }
 
-function Linha({ rotulo, children }: { rotulo: string; children: ReactNode }) {
+function Rotulo({ web, mobile }: { web: string; mobile?: string }) {
+  if (!mobile) return web
+  return (
+    <>
+      <span className="md:hidden">{mobile}</span>
+      <span className="hidden md:inline">{web}</span>
+    </>
+  )
+}
+
+type LinhaProps = { rotulo: string; rotuloMobile?: string; children: ReactNode }
+
+function Linha({ rotulo, rotuloMobile, children }: LinhaProps) {
   return (
     <div className="flex items-center justify-between gap-4 text-body leading-normal">
-      <span className="text-fg-muted">{rotulo}</span>
+      <span className="text-fg-muted">
+        <Rotulo web={rotulo} mobile={rotuloMobile} />
+      </span>
       <span className="font-semibold tabular-nums">{children}</span>
     </div>
   )
 }
 
-function LinhaDestaque({ rotulo, valor }: { rotulo: string; valor: number }) {
+type LinhaDestaqueProps = { rotulo: string; rotuloMobile?: string; valor: number }
+
+function LinhaDestaque({ rotulo, rotuloMobile, valor }: LinhaDestaqueProps) {
   const negativo = valor < 0
   const [escopo, animar] = useAnimate<HTMLSpanElement>()
   const anterior = useRef(negativo)
@@ -36,7 +52,9 @@ function LinhaDestaque({ rotulo, valor }: { rotulo: string; valor: number }) {
 
   return (
     <div className="flex items-center justify-between gap-4 border-t border-line pt-2.5 text-total">
-      <span>{rotulo}</span>
+      <span>
+        <Rotulo web={rotulo} mobile={rotuloMobile} />
+      </span>
       <span
         ref={escopo}
         className={cn(
@@ -52,23 +70,23 @@ function LinhaDestaque({ rotulo, valor }: { rotulo: string; valor: number }) {
 
 export function MovimentacaoResumo(props: MovimentacaoResumoProps) {
   return (
-    <div className="flex flex-col gap-2.5 rounded-block bg-page p-4">
+    <div className="flex flex-col gap-2.5 rounded-block border border-line bg-surface p-4 md:border-0 md:bg-page">
       {props.tipo === 'venda' ? (
         <>
           <Linha rotulo="Total da venda">
             <AnimatedNumber value={props.resumo.total} format={formatCurrency} />
           </Linha>
-          <Linha rotulo={`Custo (valor de compra × ${formatNumber(props.quantidade)})`}>
+          <Linha rotulo={`Custo (valor de compra × ${formatNumber(props.quantidade)})`} rotuloMobile="Custo">
             <AnimatedNumber value={props.resumo.custo} format={formatCurrency} />
           </Linha>
-          <Linha rotulo="Estoque após a venda">
+          <Linha rotulo="Estoque após a venda" rotuloMobile="Estoque após">
             <AnimatedNumber
               value={props.resumo.estoqueApos}
               format={formatEstoqueApos}
               className={cn('transition-colors', props.resumo.estoqueApos < 0 && 'text-danger')}
             />
           </Linha>
-          <LinhaDestaque rotulo="Lucro da venda" valor={props.resumo.lucro} />
+          <LinhaDestaque rotulo="Lucro da venda" rotuloMobile="Lucro" valor={props.resumo.lucro} />
         </>
       ) : (
         <>
