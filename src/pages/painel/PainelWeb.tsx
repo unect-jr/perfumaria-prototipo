@@ -12,21 +12,29 @@ import {
   formatUnidades,
   pluralUnidade,
 } from '../../lib/format'
+import { useRegistrar } from '../../store/registrar'
 import type { DadosPainel } from '../../store/usePainel'
 
 /** Painel (web, a partir de md). */
 export function PainelWeb({ dados }: { dados: DadosPainel }) {
   const { mes, resumo, estoque, lucroPorMes, estoqueBaixo, ranking } = dados
+  const { abrir } = useRegistrar()
 
   return (
     <div className="hidden flex-col gap-6 p-8 md:flex">
       <div className="flex flex-wrap items-center gap-3">
         <h2 className="mr-auto text-heading">Resumo de {formatMonthLong(mes)}</h2>
-        {/* TODO: abrir o registro de movimentação (modal) quando a tela existir */}
-        <Button variant="secundario" icon="compra" iconClassName="text-fg-muted">
+        <Button
+          variant="secundario"
+          icon="compra"
+          iconClassName="text-fg-muted"
+          onClick={() => abrir({ tipo: 'compra' })}
+        >
           Registrar compra
         </Button>
-        <Button icon="venda">Registrar venda</Button>
+        <Button icon="venda" onClick={() => abrir({ tipo: 'venda' })}>
+          Registrar venda
+        </Button>
       </div>
 
       <div className="grid grid-cols-2 gap-6 xl:grid-cols-4">
@@ -65,7 +73,11 @@ export function PainelWeb({ dados }: { dados: DadosPainel }) {
             atual: i === lucroPorMes.length - 1,
           }))}
         />
-        <LowStockCard className="col-span-2 xl:col-span-1" itens={estoqueBaixo} />
+        <LowStockCard
+          className="col-span-2 xl:col-span-1"
+          itens={estoqueBaixo}
+          onRepor={(produto) => abrir({ tipo: 'compra', produtoId: produto.id })}
+        />
         <ProfitRanking className="col-span-2 xl:col-span-4" itens={ranking} />
       </div>
     </div>

@@ -3,6 +3,7 @@ import { cn } from '../../lib/cn'
 import { Icon, type IconName } from './Icon'
 
 const SIZES = {
+  sm: 'size-7',
   md: 'size-9',
   lg: 'size-11',
 }

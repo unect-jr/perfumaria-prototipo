@@ -5,7 +5,7 @@ import { Icon, type IconName } from './Icon'
 
 type ButtonProps = Omit<HTMLMotionProps<'button'>, 'children'> & {
   /** Primário: ação principal (1 por área). Secundário: ações de apoio (Cancelar, Repor). */
-  variant?: 'primario' | 'secundario'
+  variant?: 'primario' | 'secundario' | 'suave'
   size?: 'md' | 'sm'
   icon?: IconName
   /** Cor do ícone quando difere do texto (ex.: `text-fg-muted` no secundário). */
@@ -16,6 +16,7 @@ type ButtonProps = Omit<HTMLMotionProps<'button'>, 'children'> & {
 const VARIANTS = {
   primario: 'bg-brand text-fg-inverse hover:bg-brand/90',
   secundario: 'border border-line bg-surface text-fg hover:bg-page',
+  suave: 'bg-brand-subtle text-brand hover:bg-brand-soft/60',
 }
 
 const SIZES = {

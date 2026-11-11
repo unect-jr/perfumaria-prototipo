@@ -9,11 +9,14 @@
   --color-page: #f6f5f2; /* fundo da página (sem variável) */
   --color-surface: #ffffff; /* bg-surface */
   --color-surface-muted: #faf9f7; /* cabeçalho de tabela (sem variável) */
+  --color-surface-subtle: #efede8; /* bg-subtle (Segmented) */
+  --color-overlay: rgb(28 27 31 / 0.45); /* fundo do modal (sem variável) */
   --color-inverse: #1c1b1f; /* bg-inverse */
 
   /* Marca */
   --color-brand: #4a2d7a; /* bg-brand, text-brand, icon-brand */
   --color-brand-subtle: #efe9f7; /* bg-brand-subtle */
+  --color-brand-highlight: #f6f1fc; /* linha recém-registrada na tabela (sem variável) */
   --color-brand-soft: #cdbee6; /* barras do gráfico (sem variável) */
   --color-brand-fg-muted: #e3d9f2; /* texto secundário sobre roxo (sem variável) */
 
@@ -52,6 +55,11 @@
   --text-stat: 19px; /* valor do Card de número (mobile) */
   --text-stat--line-height: normal;
   --text-stat--font-weight: 700;
+  --text-total: 18px; /* linha de lucro do resumo do modal */
+  --text-total--line-height: normal;
+  --text-total--font-weight: 700;
+  --text-subheading: 15px; /* título do toast */
+  --text-subheading--line-height: 20px;
   --text-heading: 16px; /* título de card */
   --text-heading--line-height: normal;
   --text-heading--font-weight: 700;
@@ -69,11 +77,15 @@
   --radius-sm: 6px; /* topo das barras do gráfico */
   --radius-md: 8px; /* radius-md */
   --radius-lg: 12px; /* radius-lg */
+  --radius-block: 10px; /* bloco "Cálculo automático" (sem variável) */
   --radius-2xl: 16px; /* cartão de destaque do mobile */
 
   /* Sombras: o Figma usa só bordas; derivadas de fg para hover de cards e camadas (modal, toast) */
   --shadow-card: 0 4px 16px -6px rgb(28 27 31 / 0.1);
   --shadow-overlay: 0 16px 40px -12px rgb(28 27 31 / 0.28);
+  --shadow-subtle: 0 1px 3px rgb(28 27 31 / 0.08); /* Sombra/Sutil */
+  --shadow-floating: 0 2px 6px rgb(28 27 31 / 0.06), 0 10px 28px rgb(28 27 31 / 0.1); /* Sombra/Flutuante */
+  --shadow-modal: 0 20px 25px rgb(0 0 0 / 0.2); /* modal */
   /* Input: borda de 1.5px (1px + 0.5px interno) e anel de foco de 3px */
   --shadow-field-focus: inset 0 0 0 0.5px var(--color-brand), 0 0 0 3px rgb(74 45 122 / 0.18);
   --shadow-field-danger: inset 0 0 0 0.5px var(--color-danger);

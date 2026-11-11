@@ -1,17 +1,18 @@
 import { motion } from 'motion/react'
-import { useNavigate, useSearchParams } from 'react-router'
+import { useSearchParams } from 'react-router'
 import { EmptyState } from '../components/EmptyState'
 import { MovementItem } from '../components/MovementItem'
 import { MovementTable } from '../components/MovementTable'
 import { Button } from '../components/ui/Button'
 import { Pagination } from '../components/ui/Pagination'
 import { EASE, STAGGER } from '../lib/motion'
+import { useRegistrar } from '../store/registrar'
 import { useHistorico } from '../store/useHistorico'
 
 const POR_PAGINA = 10
 
 export function Movimentacoes() {
-  const navigate = useNavigate()
+  const { abrir, destaqueId } = useRegistrar()
   const historico = useHistorico()
   const [params, setParams] = useSearchParams()
 
@@ -34,7 +35,7 @@ export function Movimentacoes() {
     />
   )
 
-  const registrar = () => navigate('/registrar')
+  const registrar = () => abrir()
 
   const vazio =
     linhas.length === 0 ? (
@@ -82,7 +83,7 @@ export function Movimentacoes() {
             Registrar movimentação
           </Button>
         </div>
-        {vazio ?? <MovementTable key={pagina} linhas={linhas} />}
+        {vazio ?? <MovementTable key={pagina} linhas={linhas} destaqueId={destaqueId} />}
         {paginacao}
       </div>
     </>

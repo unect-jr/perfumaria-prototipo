@@ -9,19 +9,12 @@ import { TextField } from '../components/ui/TextField'
 import type { Compra, Produto } from '../data/types'
 import { getResumoNovoProduto, normalizeBusca } from '../lib/calc'
 import { pluralUnidade } from '../lib/format'
+import { apenasDigitos, toInt } from '../lib/parse'
 import { useStore } from '../store/context'
 
 type Campo = 'nome' | 'compra' | 'venda' | 'quantidade' | 'minimo'
 
 const ORDEM_CAMPOS: Campo[] = ['nome', 'compra', 'venda', 'quantidade', 'minimo']
-
-function apenasDigitos(texto: string): string {
-  return texto.replace(/\D/g, '').slice(0, 4)
-}
-
-function toInt(texto: string): number {
-  return texto === '' ? 0 : Number(texto)
-}
 
 export function ProdutoNovo() {
   const navigate = useNavigate()

@@ -1,7 +1,9 @@
 import { motion } from 'motion/react'
 import { Outlet, useLocation, useMatches } from 'react-router'
+import { RegistrarProvider } from '../components/RegistrarProvider'
 import { Sidebar } from '../components/Sidebar'
 import { TabBar } from '../components/TabBar'
+import { ToastProvider } from '../components/ui/ToastProvider'
 import { Topbar } from '../components/Topbar'
 import { EASE } from '../lib/motion'
 
@@ -19,21 +21,25 @@ export function AppLayout() {
   const title = isRouteHandle(handle) ? handle.title : ''
 
   return (
-    <div className="min-h-dvh">
-      <Sidebar />
-      <div className="flex min-h-dvh flex-col md:pl-62">
-        <Topbar title={title} />
-        <motion.main
-          key={pathname}
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.25, ease: EASE }}
-          className="flex-1 pb-21 md:pb-0"
-        >
-          <Outlet />
-        </motion.main>
-      </div>
-      <TabBar />
-    </div>
+    <ToastProvider>
+      <RegistrarProvider>
+        <div className="min-h-dvh">
+          <Sidebar />
+          <div className="flex min-h-dvh flex-col md:pl-62">
+            <Topbar title={title} />
+            <motion.main
+              key={pathname}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.25, ease: EASE }}
+              className="flex-1 pb-21 md:pb-0"
+            >
+              <Outlet />
+            </motion.main>
+          </div>
+          <TabBar />
+        </div>
+      </RegistrarProvider>
+    </ToastProvider>
   )
 }

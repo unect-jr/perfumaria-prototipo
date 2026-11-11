@@ -2,8 +2,12 @@ import {
   ArrowDownLeft,
   ArrowRightLeft,
   ArrowUpRight,
+  Calendar,
+  Check,
+  ChevronDown,
   ChevronLeft,
   ChevronRight,
+  CircleAlert,
   createLucideIcon,
   House,
   LayoutGrid,
@@ -11,6 +15,7 @@ import {
   Plus,
   Search,
   TriangleAlert,
+  X,
   type LucideIcon,
 } from 'lucide-react'
 import { cn } from '../../lib/cn'
@@ -35,6 +40,11 @@ const ICONS = {
   editar: Pencil,
   voltar: ChevronLeft,
   avancar: ChevronRight,
+  fechar: X,
+  'seta-baixo': ChevronDown,
+  calendario: Calendar,
+  check: Check,
+  erro: CircleAlert,
 } satisfies Record<string, LucideIcon>
 
 export type IconName = keyof typeof ICONS

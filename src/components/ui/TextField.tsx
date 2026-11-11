@@ -1,6 +1,7 @@
-import { AnimatePresence, motion } from 'motion/react'
-import { useId, type ComponentProps } from 'react'
+import { useId, type ComponentProps, type ReactNode } from 'react'
 import { cn } from '../../lib/cn'
+import { Field } from './Field'
+import { getFieldTone } from './fieldTone'
 
 type TextFieldProps = Omit<ComponentProps<'input'>, 'className' | 'size' | 'value'> & {
   label: string
@@ -9,7 +10,9 @@ type TextFieldProps = Omit<ComponentProps<'input'>, 'className' | 'size' | 'valu
   error?: string
   warning?: string
   suffix?: string
+  icon?: ReactNode
   className?: string
+  inputClassName?: string
 }
 
 export function TextField({
@@ -19,7 +22,9 @@ export function TextField({
   error,
   warning,
   suffix,
+  icon,
   className,
+  inputClassName,
   id,
   ...rest
 }: TextFieldProps) {
@@ -27,59 +32,37 @@ export function TextField({
   const inputId = id ?? autoId
   const messageId = `${inputId}-mensagem`
   const message = error ?? warning ?? help
-  const tone = error ? 'erro' : warning ? 'alerta' : 'padrao'
+  const tone = getFieldTone(error, warning)
 
   return (
-    <div className={cn('flex flex-col gap-1.5', className)}>
-      <label htmlFor={inputId} className="text-label font-semibold whitespace-nowrap">
-        {label}
-      </label>
-      <div
+    <Field
+      label={label}
+      htmlFor={inputId}
+      messageId={messageId}
+      message={message}
+      tone={tone}
+      className={className}
+    >
+      <input
+        id={inputId}
+        value={value}
+        aria-invalid={tone === 'erro' || undefined}
+        aria-describedby={message ? messageId : undefined}
         className={cn(
-          'relative flex h-11 items-center gap-2 rounded-md border bg-surface px-3 transition-[border-color,box-shadow] duration-120 ease-out',
-          tone === 'erro' && 'border-danger shadow-field-danger',
-          tone === 'alerta' && 'border-warning shadow-field-warning',
-          tone === 'padrao' &&
-            'border-line-input hover:border-line-hover focus-within:border-brand focus-within:shadow-field-focus hover:focus-within:border-brand',
+          'min-w-0 flex-1 bg-transparent text-body text-fg outline-none placeholder:text-fg-placeholder',
+          inputClassName,
         )}
-      >
-        <input
-          id={inputId}
-          value={value}
-          aria-invalid={tone === 'erro' || undefined}
-          aria-describedby={message ? messageId : undefined}
-          className="min-w-0 flex-1 bg-transparent text-body text-fg outline-none placeholder:text-fg-placeholder"
-          {...rest}
-        />
-        {suffix && value !== '' && (
-          <span
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-y-0 left-3 flex items-center text-body whitespace-pre"
-          >
-            <span className="invisible">{value}</span> {suffix}
-          </span>
-        )}
-      </div>
-      <AnimatePresence mode="wait" initial={false}>
-        {message && (
-          <motion.p
-            key={`${tone}-${message}`}
-            id={messageId}
-            initial={{ opacity: 0, y: -2 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.15 }}
-            className={cn(
-              'text-caption',
-              tone === 'erro' && 'font-medium text-danger',
-              tone === 'alerta' && 'font-medium text-warning',
-              tone === 'padrao' && 'text-fg-muted',
-            )}
-          >
-            {message}
-          </motion.p>
-        )}
-      </AnimatePresence>
-    </div>
+        {...rest}
+      />
+      {suffix && value !== '' && (
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-y-0 left-3 flex items-center text-body whitespace-pre"
+        >
+          <span className="invisible">{value}</span> {suffix}
+        </span>
+      )}
+      {icon}
+    </Field>
   )
 }

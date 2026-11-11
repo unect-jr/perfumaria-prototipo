@@ -233,3 +233,47 @@ export function getResumoNovoProduto(
     investimento: quantidade * valorCompra,
   }
 }
+
+export type ResumoVenda = {
+  total: number
+  custo: number
+  estoqueApos: number
+  lucro: number
+}
+
+export function getResumoVenda(
+  posicao: Posicao,
+  quantidade: number,
+  valorUnitario: number,
+): ResumoVenda {
+  const total = quantidade * valorUnitario
+  const custo = quantidade * posicao.custoMedio
+  return { total, custo, estoqueApos: posicao.estoque - quantidade, lucro: total - custo }
+}
+
+export type ResumoCompra = {
+  total: number
+  estoqueApos: number
+  custoMedioAntes: number
+  custoMedioDepois: number
+  lucroUnitario: number
+}
+
+export function getResumoCompra(
+  posicao: Posicao,
+  quantidade: number,
+  valorUnitario: number,
+  precoVenda: number,
+): ResumoCompra {
+  const custoMedioDepois =
+    quantidade > 0
+      ? getNovoCustoMedio(posicao.estoque, posicao.custoMedio, quantidade, valorUnitario)
+      : posicao.custoMedio
+  return {
+    total: quantidade * valorUnitario,
+    estoqueApos: posicao.estoque + quantidade,
+    custoMedioAntes: posicao.custoMedio,
+    custoMedioDepois,
+    lucroUnitario: precoVenda - custoMedioDepois,
+  }
+}

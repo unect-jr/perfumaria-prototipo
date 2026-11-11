@@ -13,7 +13,12 @@ const COLUNAS_VALOR = [
   { rotulo: 'Lucro', largura: 'w-38 pr-4' },
 ]
 
-export function MovementTable({ linhas }: { linhas: LinhaHistorico[] }) {
+type MovementTableProps = {
+  linhas: LinhaHistorico[]
+  destaqueId?: string | null
+}
+
+export function MovementTable({ linhas, destaqueId }: MovementTableProps) {
   return (
     <Card className="overflow-hidden">
       <table className="w-full table-fixed border-collapse text-left">
@@ -46,7 +51,12 @@ export function MovementTable({ linhas }: { linhas: LinhaHistorico[] }) {
               initial={{ opacity: 0, y: 4 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: Math.min(i, 12) * STAGGER, duration: 0.25, ease: EASE }}
-              className="border-b border-line-subtle text-body leading-normal tabular-nums transition-colors duration-120 ease-out hover:bg-surface-muted"
+              className={cn(
+                'border-b border-line-subtle text-body leading-normal tabular-nums transition-colors ease-out',
+                movimentacao.id === destaqueId
+                  ? 'bg-brand-highlight duration-120'
+                  : 'duration-700 hover:bg-surface-muted hover:duration-120',
+              )}
             >
               <td className="py-3.5 pl-4">{formatDayMonth(movimentacao.data)}</td>
               <td className="py-3.5 pl-4">
