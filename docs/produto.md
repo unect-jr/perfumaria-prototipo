@@ -43,8 +43,10 @@ O protótipo precisa deixar essas respostas visíveis em segundos no **Painel** 
 
 ## 6. Números âncora (o seed precisa reproduzir)
 Estado inicial do Painel ("Resumo de novembro" no Figma; no app, o mês corrente):
-- Total investido **R$ 14.480,00** · Total vendido **R$ 10.438,00** · Lucro obtido **R$ 4.038,00** · Margem média **38,7%** · Em estoque **60 un.** · Estoque baixo **2 produtos** · Lucro **+11,2%** vs. mês anterior.
-- Consistência: 4.038 ÷ 10.438 = 38,7%; custo das unidades vendidas = 10.438 − 4.038 = R$ 6.400,00; lucro do mês anterior ≈ R$ 3.631,00.
+- Total investido **R$ 14.480,00** · Total vendido **R$ 10.438,00** · Lucro obtido **R$ 4.038,00** · Margem média **38,7%** · Em estoque **60 un.** · Estoque baixo **2 produtos** · Lucro **+13,4%** vs. mês anterior (Figma mobile: "+13,4% vs. outubro").
+- Consistência: 4.038 ÷ 10.438 = 38,7%; custo das unidades vendidas = 10.438 − 4.038 = R$ 6.400,00; lucro do mês anterior = R$ 3.560,00 (gráfico "Lucro por mês"); 4.038 ÷ 3.560 − 1 = 13,4%.
+- "Total investido" é do mês corrente (compras do mês); só assim os números do Figma fecham juntos.
+- Últimas movimentações (Início mobile): venda de 2 un. de Cítrico Fresh 50ml hoje (R$ 318,00, +R$ 128,00) e compra de 10 un. de Lavanda Clássica 100ml ontem (R$ 1.200,00).
 
 Após registrar a venda de 2 un. de Madeira Oriental 100ml a R$ 349,00:
 - Lucro **R$ 4.316,00** · Total vendido **R$ 11.136,00** · Em estoque **58 un.** · Total investido inalterado (R$ 14.480,00).

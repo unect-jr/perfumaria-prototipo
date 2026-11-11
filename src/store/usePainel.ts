@@ -2,19 +2,24 @@ import { useMemo, useState } from 'react'
 import {
   getEstoqueBaixo,
   getLucroDoMes,
+  getLucroVenda,
   getMes,
   getMesesAte,
   getPosicoes,
   getRankingDoMes,
   getResumoDoMes,
   getResumoEstoque,
+  getTotal,
+  getUltimas,
+  getVariacao,
 } from '../lib/calc'
 import { useStore } from './context'
 
 const MESES_NO_GRAFICO = 6
 const ITENS_NO_RANKING = 5
+const ULTIMAS_MOVIMENTACOES = 2
 
-/** Seletores derivados do Painel, todos calculados a partir das movimentações. */
+/** Seletores derivados do Painel (web) e do Início (mobile), todos a partir das movimentações. */
 export function usePainel() {
   const { estado } = useStore()
   const [mes] = useState(() => getMes(new Date()))
@@ -22,16 +27,33 @@ export function usePainel() {
   return useMemo(() => {
     const { produtos, movimentacoes } = estado
     const posicoes = getPosicoes(produtos, movimentacoes)
+    const lucroPorMes = getMesesAte(mes, MESES_NO_GRAFICO).map((m) => ({
+      mes: m,
+      lucro: getLucroDoMes(movimentacoes, m),
+    }))
+    const resumo = getResumoDoMes(movimentacoes, mes)
+    const anterior = lucroPorMes[lucroPorMes.length - 2]
+
     return {
       mes,
-      resumo: getResumoDoMes(movimentacoes, mes),
+      resumo,
+      /** Variação do lucro em relação ao mês anterior. */
+      variacao: {
+        mesAnterior: anterior.mes,
+        valor: getVariacao(resumo.lucro, anterior.lucro),
+      },
       estoque: getResumoEstoque(posicoes),
-      lucroPorMes: getMesesAte(mes, MESES_NO_GRAFICO).map((m) => ({
-        mes: m,
-        lucro: getLucroDoMes(movimentacoes, m),
-      })),
+      lucroPorMes,
       estoqueBaixo: getEstoqueBaixo(produtos, posicoes),
       ranking: getRankingDoMes(produtos, movimentacoes, mes).slice(0, ITENS_NO_RANKING),
+      ultimas: getUltimas(movimentacoes, ULTIMAS_MOVIMENTACOES).map((movimentacao) => ({
+        movimentacao,
+        produto: produtos.find((p) => p.id === movimentacao.produtoId),
+        total: getTotal(movimentacao),
+        lucro: movimentacao.tipo === 'venda' ? getLucroVenda(movimentacao) : null,
+      })),
     }
   }, [estado, mes])
 }
+
+export type DadosPainel = ReturnType<typeof usePainel>

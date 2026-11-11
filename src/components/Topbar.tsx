@@ -1,15 +1,11 @@
-/** Barra superior: título da página e avatar do usuário. */
+import { Avatar } from './Avatar'
+
+/** Barra superior do layout web: título da página e avatar. No mobile cada tela tem seu cabeçalho. */
 export function Topbar({ title }: { title: string }) {
   return (
-    <header className="flex h-18 shrink-0 items-center gap-4 border-b border-line bg-surface px-4 md:px-8">
+    <header className="hidden h-18 shrink-0 items-center gap-4 border-b border-line bg-surface px-8 md:flex">
       <h1 className="text-title">{title}</h1>
-      <div
-        role="img"
-        aria-label="Cliente"
-        className="ml-auto flex size-9 items-center justify-center rounded-full bg-brand-subtle text-body leading-normal font-semibold text-brand"
-      >
-        CL
-      </div>
+      <Avatar className="ml-auto" />
     </header>
   )
 }

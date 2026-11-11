@@ -36,18 +36,19 @@ const VENDAS_MESES_ANTERIORES = [
   [8, 7, 6, 8, 6, 5], // lucro 3.560
 ]
 
-// Compras do mês corrente: [produto, quantidade, fração do mês até hoje]. Soma R$ 14.480,00.
-const COMPRAS_MES: [string, number, number][] = [
-  ['madeira-oriental', 13, 0],
-  ['ambar-noturno', 20, 0],
-  ['flor-de-laranjeira', 12, 0],
-  ['lavanda-classica', 11, 0],
-  ['citrico-fresh', 34, 0],
-  ['baunilha-suave', 12, 0],
-  ['lavanda-classica', 10, 0.75], // compra recente de 10 un. a R$ 120,00
+// Compras do início do mês corrente: [produto, quantidade]. Com a compra de Lavanda de ontem
+// (10 un. a R$ 120,00), somam R$ 14.480,00.
+const COMPRAS_INICIO_MES: [string, number][] = [
+  ['madeira-oriental', 13],
+  ['ambar-noturno', 20],
+  ['flor-de-laranjeira', 12],
+  ['lavanda-classica', 11],
+  ['citrico-fresh', 34],
+  ['baunilha-suave', 12],
 ]
 
-// Vendas do mês corrente: [produto, quantidade, fração do mês até hoje].
+// Vendas do mês corrente até anteontem: [produto, quantidade, fração do período].
+// Depois delas vêm as duas "Últimas movimentações" do Figma (ver buildMovimentacoes).
 const VENDAS_MES: [string, number, number][] = [
   ['citrico-fresh', 4, 0.2],
   ['flor-de-laranjeira', 4, 0.25],
@@ -59,7 +60,7 @@ const VENDAS_MES: [string, number, number][] = [
   ['flor-de-laranjeira', 5, 0.7],
   ['ambar-noturno', 5, 0.8],
   ['baunilha-suave', 4, 0.85],
-  ['citrico-fresh', 5, 0.9],
+  ['citrico-fresh', 3, 0.9],
   ['lavanda-classica', 3, 0.95],
   ['madeira-oriental', 3, 1],
 ]
@@ -107,19 +108,23 @@ function buildMovimentacoes(now: Date): Movimentacao[] {
     })
   })
 
-  // Mês corrente: datas entre o dia 1 e hoje, nunca no futuro.
-  // Empates de horário mantêm a ordem de inserção (compras antes das vendas).
-  const noMesCorrente = (fracao: number, hora: number) => {
-    const dia = Math.max(1, Math.ceil(hoje * fracao))
-    const data = new Date(ano, mes, dia, hora)
-    return data > now ? new Date(now) : data
-  }
-  COMPRAS_MES.forEach(([produtoId, quantidade, fracao]) =>
-    compra(produtoId, quantidade, noMesCorrente(fracao, 8)),
+  // Mês corrente: datas entre o dia 1 e hoje, nunca no futuro. Empates de horário (só no
+  // começo do mês) mantêm a ordem de inserção, que já é a cronológica.
+  const ateAgora = (data: Date) => (data > now ? new Date(now) : data)
+  const anteontem = Math.max(1, hoje - 2)
+  COMPRAS_INICIO_MES.forEach(([produtoId, quantidade]) =>
+    compra(produtoId, quantidade, ateAgora(new Date(ano, mes, 1, 8))),
   )
-  VENDAS_MES.forEach(([produtoId, quantidade, fracao], i) =>
-    venda(produtoId, quantidade, noMesCorrente(fracao, 10 + (i % 8))),
-  )
+  VENDAS_MES.forEach(([produtoId, quantidade, fracao], i) => {
+    const dia = Math.max(1, Math.ceil(anteontem * fracao))
+    venda(produtoId, quantidade, ateAgora(new Date(ano, mes, dia, 9 + (i % 8))))
+  })
+
+  // Últimas movimentações do Figma: compra de Lavanda ontem e venda de Cítrico hoje.
+  const ontem = ateAgora(new Date(ano, mes, Math.max(1, hoje - 1), 18))
+  compra('lavanda-classica', 10, ontem)
+  const hojeCedo = new Date(ano, mes, hoje, 10)
+  venda('citrico-fresh', 2, ateAgora(hojeCedo > ontem ? hojeCedo : ontem))
 
   return movimentacoes
 }

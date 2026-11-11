@@ -103,6 +103,19 @@ export function getLucroDoMes(movimentacoes: readonly Movimentacao[], mes: Mes):
   return getVendasDoMes(movimentacoes, mes).reduce((soma, v) => soma + getLucroVenda(v), 0)
 }
 
+/** Variação relativa (0.134 = +13,4%). Sem base positiva para comparar, retorna null. */
+export function getVariacao(atual: number, anterior: number): number | null {
+  return anterior > 0 ? atual / anterior - 1 : null
+}
+
+/** As `quantidade` movimentações mais recentes, da mais nova para a mais antiga. */
+export function getUltimas(
+  movimentacoes: readonly Movimentacao[],
+  quantidade: number,
+): Movimentacao[] {
+  return sortByData(movimentacoes).reverse().slice(0, quantidade)
+}
+
 export type ItemRanking = { produto: Produto; unidades: number; total: number; lucro: number }
 
 /** Produtos vendidos no mês, do maior para o menor lucro. */

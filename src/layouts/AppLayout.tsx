@@ -1,6 +1,7 @@
 import { motion } from 'motion/react'
 import { Outlet, useLocation, useMatches } from 'react-router'
 import { Sidebar } from '../components/Sidebar'
+import { TabBar } from '../components/TabBar'
 import { Topbar } from '../components/Topbar'
 import { EASE } from '../lib/motion'
 
@@ -11,7 +12,7 @@ function isRouteHandle(handle: unknown): handle is RouteHandle {
   return typeof handle === 'object' && handle !== null && 'title' in handle
 }
 
-/** Layout web: sidebar fixa + topbar. O layout mobile (barra inferior) entra depois. */
+/** Web (a partir de md): sidebar fixa + topbar. Mobile: barra inferior; cada tela traz seu cabeçalho. */
 export function AppLayout() {
   const { pathname } = useLocation()
   const handle = useMatches().findLast((m) => isRouteHandle(m.handle))?.handle
@@ -27,11 +28,12 @@ export function AppLayout() {
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.25, ease: EASE }}
-          className="flex-1"
+          className="flex-1 pb-21 md:pb-0"
         >
           <Outlet />
         </motion.main>
       </div>
+      <TabBar />
     </div>
   )
 }

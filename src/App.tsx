@@ -4,7 +4,7 @@ import { AppLayout, type RouteHandle } from './layouts/AppLayout'
 import { Painel } from './pages/Painel'
 import { StoreProvider } from './store/StoreProvider'
 
-// Produtos e Movimentações: só o título por enquanto; as telas vêm nos próximos marcos.
+// Produtos, Movimentações e Registrar: só a rota por enquanto; as telas vêm nos próximos marcos.
 const router = createBrowserRouter([
   {
     path: '/',
@@ -13,6 +13,7 @@ const router = createBrowserRouter([
       { index: true, element: <Painel />, handle: { title: 'Painel' } satisfies RouteHandle },
       { path: 'produtos', handle: { title: 'Produtos' } satisfies RouteHandle },
       { path: 'movimentacoes', handle: { title: 'Movimentações' } satisfies RouteHandle },
+      { path: 'registrar', handle: { title: 'Registrar movimentação' } satisfies RouteHandle },
     ],
   },
 ])
