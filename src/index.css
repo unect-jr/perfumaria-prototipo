@@ -26,6 +26,7 @@
   --color-fg: #1c1b1f; /* text-primary */
   --color-fg-muted: #5f5c66; /* text-secondary, icon-default */
   --color-fg-inverse: #ffffff; /* text-inverse */
+  --color-fg-placeholder: #6b6873; /* placeholder do Input (sem variável) */
 
   /* Status */
   --color-success: #1e7347; /* text-success */

@@ -6,12 +6,12 @@ import type { Movimentacao, Produto } from './types'
 // Gráfico "Lucro por mês": 2.150, 2.480, 2.910, 3.120, 3.560 e 4.038.
 
 export const produtosSeed: Produto[] = [
-  { id: 'madeira-oriental', nome: 'Madeira Oriental 100ml', precoVenda: 349, estoqueMinimo: 3 },
-  { id: 'ambar-noturno', nome: 'Âmbar Noturno 100ml', precoVenda: 289, estoqueMinimo: 3 },
-  { id: 'flor-de-laranjeira', nome: 'Flor de Laranjeira 75ml', precoVenda: 219, estoqueMinimo: 3 },
-  { id: 'lavanda-classica', nome: 'Lavanda Clássica 100ml', precoVenda: 199, estoqueMinimo: 3 },
-  { id: 'citrico-fresh', nome: 'Cítrico Fresh 50ml', precoVenda: 159, estoqueMinimo: 3 },
-  { id: 'baunilha-suave', nome: 'Baunilha Suave 30ml', precoVenda: 99, estoqueMinimo: 3 },
+  { id: 'madeira-oriental', nome: 'Madeira Oriental 100ml', familiaOlfativa: 'Oriental', precoVenda: 349, estoqueMinimo: 3 },
+  { id: 'ambar-noturno', nome: 'Âmbar Noturno 100ml', familiaOlfativa: 'Amadeirado', precoVenda: 289, estoqueMinimo: 3 },
+  { id: 'flor-de-laranjeira', nome: 'Flor de Laranjeira 75ml', familiaOlfativa: 'Floral', precoVenda: 219, estoqueMinimo: 3 },
+  { id: 'lavanda-classica', nome: 'Lavanda Clássica 100ml', familiaOlfativa: 'Aromático', precoVenda: 199, estoqueMinimo: 3 },
+  { id: 'citrico-fresh', nome: 'Cítrico Fresh 50ml', familiaOlfativa: 'Cítrico', precoVenda: 159, estoqueMinimo: 3 },
+  { id: 'baunilha-suave', nome: 'Baunilha Suave 30ml', familiaOlfativa: 'Doce', precoVenda: 99, estoqueMinimo: 3 },
 ]
 
 // Valor de compra por produto. Como toda compra do seed usa o mesmo valor, o custo médio é constante.

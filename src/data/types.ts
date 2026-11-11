@@ -4,6 +4,7 @@
 export type Produto = {
   id: string
   nome: string
+  familiaOlfativa: string
   precoVenda: number
   /** Limite de aviso: estoque ≤ estoqueMinimo é "estoque baixo". */
   estoqueMinimo: number

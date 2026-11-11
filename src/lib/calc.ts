@@ -165,3 +165,36 @@ export function getEstoqueBaixo(
     .map((produto) => ({ produto, estoque: posicoes.get(produto.id)?.estoque ?? 0 }))
     .filter(({ produto, estoque }) => isEstoqueBaixo(produto, estoque))
 }
+
+export type ItemCatalogo = {
+  produto: Produto
+  estoque: number
+  custoMedio: number
+  lucroUnitario: number
+  margem: number
+  baixo: boolean
+}
+
+export function getCatalogo(
+  produtos: readonly Produto[],
+  posicoes: ReadonlyMap<string, Posicao>,
+): ItemCatalogo[] {
+  return produtos
+    .map((produto) => {
+      const { estoque, custoMedio } = posicoes.get(produto.id) ?? { estoque: 0, custoMedio: 0 }
+      const lucroUnitario = produto.precoVenda - custoMedio
+      return {
+        produto,
+        estoque,
+        custoMedio,
+        lucroUnitario,
+        margem: produto.precoVenda > 0 ? lucroUnitario / produto.precoVenda : 0,
+        baixo: isEstoqueBaixo(produto, estoque),
+      }
+    })
+    .sort((a, b) => a.produto.nome.localeCompare(b.produto.nome, 'pt-BR'))
+}
+
+export function normalizeBusca(texto: string): string {
+  return texto.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase().trim()
+}

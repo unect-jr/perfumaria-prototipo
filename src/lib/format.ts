@@ -72,3 +72,7 @@ export function formatMonthShort(mes: Mes): string {
   const texto = monthShort.format(toDate(mes)).replace('.', '')
   return texto.charAt(0).toUpperCase() + texto.slice(1)
 }
+
+export function formatLucroUnitario(valor: number): string {
+  return `${formatSignedCurrency(valor)}/un.`
+}

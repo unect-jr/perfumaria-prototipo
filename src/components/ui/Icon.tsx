@@ -1,31 +1,42 @@
+import {
+  ArrowDownLeft,
+  ArrowRightLeft,
+  ArrowUpRight,
+  createLucideIcon,
+  House,
+  LayoutGrid,
+  Pencil,
+  Plus,
+  Search,
+  TriangleAlert,
+  type LucideIcon,
+} from 'lucide-react'
 import { cn } from '../../lib/cn'
 
-export type IconName =
-  | 'painel'
-  | 'inicio'
-  | 'produto'
-  | 'movimentacoes'
-  | 'compra'
-  | 'venda'
-  | 'alerta'
-  | 'plus'
+const Frasco = createLucideIcon('Frasco', [
+  ['rect', { x: '9', y: '2', width: '6', height: '3.5', rx: '1', key: 'tampa' }],
+  ['path', { d: 'M10.5 5.5v2M13.5 5.5v2', key: 'gargalo' }],
+  ['rect', { x: '5', y: '7.5', width: '14', height: '14.5', rx: '3.5', key: 'corpo' }],
+  ['path', { d: 'M8.5 14h7', key: 'rotulo' }],
+])
 
-/**
- * Tamanhos exportados do Figma. O traço é 1.75 em cada tamanho, por isso há um arquivo
- * por tamanho: 18 em public/icons, 20 e 22 em public/icons/20 e public/icons/22.
- */
-export type IconSize = 18 | 20 | 22
+const ICONS = {
+  painel: LayoutGrid,
+  inicio: House,
+  produto: Frasco,
+  movimentacoes: ArrowRightLeft,
+  compra: ArrowDownLeft,
+  venda: ArrowUpRight,
+  alerta: TriangleAlert,
+  plus: Plus,
+  busca: Search,
+  editar: Pencil,
+} satisfies Record<string, LucideIcon>
 
-const SIZE_CLASS: Record<IconSize, string> = {
-  18: 'size-4.5',
-  20: 'size-5',
-  22: 'size-5.5',
-}
+export type IconName = keyof typeof ICONS
 
-/**
- * Ícone exportado do Figma, renderizado como máscara para herdar a cor do texto
- * (`currentColor`): use classes `text-*` para colorir.
- */
+export type IconSize = 16 | 18 | 20 | 22
+
 export function Icon({
   name,
   size = 18,
@@ -35,13 +46,14 @@ export function Icon({
   size?: IconSize
   className?: string
 }) {
-  const src = size === 18 ? `/icons/${name}.svg` : `/icons/${size}/${name}.svg`
-  const mask = `url(${src}) center / contain no-repeat`
+  const Component = ICONS[name]
   return (
-    <span
+    <Component
       aria-hidden="true"
-      className={cn('inline-block shrink-0 bg-current', SIZE_CLASS[size], className)}
-      style={{ mask, WebkitMask: mask }}
+      size={size}
+      strokeWidth={1.75}
+      absoluteStrokeWidth
+      className={cn('shrink-0', className)}
     />
   )
 }
