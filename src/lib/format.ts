@@ -9,6 +9,7 @@ const percent = new Intl.NumberFormat('pt-BR', {
 })
 const monthLong = new Intl.DateTimeFormat('pt-BR', { month: 'long' })
 const monthShort = new Intl.DateTimeFormat('pt-BR', { month: 'short' })
+const dayMonthNumeric = new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: '2-digit' })
 const dayMonth = new Intl.DateTimeFormat('pt-BR', { day: 'numeric', month: 'short' })
 
 const DIA_MS = 24 * 60 * 60 * 1000
@@ -21,6 +22,10 @@ export function formatRelativeDay(dataIso: string, agora = new Date()): string {
   if (dias === 0) return 'hoje'
   if (dias === 1) return 'ontem'
   return dayMonth.format(data)
+}
+
+export function formatDayMonth(dataIso: string): string {
+  return dayMonthNumeric.format(new Date(dataIso))
 }
 
 /** R$ 1.234,56 */

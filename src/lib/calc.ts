@@ -116,6 +116,26 @@ export function getUltimas(
   return sortByData(movimentacoes).reverse().slice(0, quantidade)
 }
 
+export type LinhaHistorico = {
+  movimentacao: Movimentacao
+  produto: Produto | undefined
+  total: number
+  lucro: number | null
+}
+
+export function getHistorico(
+  produtos: readonly Produto[],
+  movimentacoes: readonly Movimentacao[],
+  quantidade = movimentacoes.length,
+): LinhaHistorico[] {
+  return getUltimas(movimentacoes, quantidade).map((movimentacao) => ({
+    movimentacao,
+    produto: produtos.find((p) => p.id === movimentacao.produtoId),
+    total: getTotal(movimentacao),
+    lucro: movimentacao.tipo === 'venda' ? getLucroVenda(movimentacao) : null,
+  }))
+}
+
 export type ItemRanking = { produto: Produto; unidades: number; total: number; lucro: number }
 
 /** Produtos vendidos no mês, do maior para o menor lucro. */

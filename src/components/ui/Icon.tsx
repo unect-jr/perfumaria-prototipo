@@ -3,6 +3,7 @@ import {
   ArrowRightLeft,
   ArrowUpRight,
   ChevronLeft,
+  ChevronRight,
   createLucideIcon,
   House,
   LayoutGrid,
@@ -33,11 +34,12 @@ const ICONS = {
   busca: Search,
   editar: Pencil,
   voltar: ChevronLeft,
+  avancar: ChevronRight,
 } satisfies Record<string, LucideIcon>
 
 export type IconName = keyof typeof ICONS
 
-export type IconSize = 16 | 18 | 20 | 22
+export type IconSize = 14 | 16 | 18 | 20 | 22
 
 export function Icon({
   name,

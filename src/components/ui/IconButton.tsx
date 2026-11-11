@@ -12,11 +12,14 @@ type IconButtonProps = {
   label: string
   size?: keyof typeof SIZES
   className?: string
-} & ({ to: string; onClick?: never } | { to?: never; onClick: () => void })
+} & (
+  | { to: string; onClick?: never; disabled?: never }
+  | { to?: never; onClick: () => void; disabled?: boolean }
+)
 
-export function IconButton({ icon, label, size = 'md', className, to, onClick }: IconButtonProps) {
+export function IconButton({ icon, label, size = 'md', className, to, onClick, disabled }: IconButtonProps) {
   const classes = cn(
-    'flex shrink-0 cursor-pointer items-center justify-center rounded-md border border-line bg-surface text-fg-muted transition-colors duration-120 ease-out hover:bg-page hover:text-fg active:scale-97',
+    'flex shrink-0 cursor-pointer items-center justify-center rounded-md border border-line bg-surface text-fg-muted transition-colors duration-120 ease-out hover:bg-page hover:text-fg active:scale-97 disabled:pointer-events-none disabled:opacity-40',
     SIZES[size],
     className,
   )
@@ -29,7 +32,14 @@ export function IconButton({ icon, label, size = 'md', className, to, onClick }:
     )
   }
   return (
-    <button type="button" aria-label={label} title={label} onClick={onClick} className={classes}>
+    <button
+      type="button"
+      aria-label={label}
+      title={label}
+      onClick={onClick}
+      disabled={disabled}
+      className={classes}
+    >
       {icone}
     </button>
   )

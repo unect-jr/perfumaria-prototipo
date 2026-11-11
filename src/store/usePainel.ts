@@ -1,16 +1,14 @@
 import { useMemo, useState } from 'react'
 import {
   getEstoqueBaixo,
+  getHistorico,
   getLucroDoMes,
-  getLucroVenda,
   getMes,
   getMesesAte,
   getPosicoes,
   getRankingDoMes,
   getResumoDoMes,
   getResumoEstoque,
-  getTotal,
-  getUltimas,
   getVariacao,
 } from '../lib/calc'
 import { useStore } from './context'
@@ -46,12 +44,7 @@ export function usePainel() {
       lucroPorMes,
       estoqueBaixo: getEstoqueBaixo(produtos, posicoes),
       ranking: getRankingDoMes(produtos, movimentacoes, mes).slice(0, ITENS_NO_RANKING),
-      ultimas: getUltimas(movimentacoes, ULTIMAS_MOVIMENTACOES).map((movimentacao) => ({
-        movimentacao,
-        produto: produtos.find((p) => p.id === movimentacao.produtoId),
-        total: getTotal(movimentacao),
-        lucro: movimentacao.tipo === 'venda' ? getLucroVenda(movimentacao) : null,
-      })),
+      ultimas: getHistorico(produtos, movimentacoes, ULTIMAS_MOVIMENTACOES),
     }
   }, [estado, mes])
 }
