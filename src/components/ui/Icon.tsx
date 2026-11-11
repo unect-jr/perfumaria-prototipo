@@ -2,6 +2,7 @@ import {
   ArrowDownLeft,
   ArrowRightLeft,
   ArrowUpRight,
+  ChevronLeft,
   createLucideIcon,
   House,
   LayoutGrid,
@@ -31,6 +32,7 @@ const ICONS = {
   plus: Plus,
   busca: Search,
   editar: Pencil,
+  voltar: ChevronLeft,
 } satisfies Record<string, LucideIcon>
 
 export type IconName = keyof typeof ICONS

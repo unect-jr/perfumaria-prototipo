@@ -198,3 +198,18 @@ export function getCatalogo(
 export function normalizeBusca(texto: string): string {
   return texto.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase().trim()
 }
+
+export type ResumoNovoProduto = { lucroUnitario: number; margem: number; investimento: number }
+
+export function getResumoNovoProduto(
+  valorCompra: number,
+  precoVenda: number,
+  quantidade: number,
+): ResumoNovoProduto {
+  const lucroUnitario = precoVenda - valorCompra
+  return {
+    lucroUnitario,
+    margem: precoVenda > 0 ? lucroUnitario / precoVenda : 0,
+    investimento: quantidade * valorCompra,
+  }
+}

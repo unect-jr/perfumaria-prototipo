@@ -1,4 +1,4 @@
-import type { Movimentacao, Produto } from '../data/types'
+import type { Compra, Movimentacao, Produto } from '../data/types'
 
 export type EstadoApp = {
   produtos: Produto[]
@@ -8,6 +8,7 @@ export type EstadoApp = {
 export type Acao =
   | { type: 'movimentacao/registrada'; movimentacao: Movimentacao }
   | { type: 'movimentacao/removida'; id: string }
+  | { type: 'produto/cadastrado'; produto: Produto; compraInicial: Compra }
 
 export function reducer(estado: EstadoApp, acao: Acao): EstadoApp {
   switch (acao.type) {
@@ -17,6 +18,11 @@ export function reducer(estado: EstadoApp, acao: Acao): EstadoApp {
       return {
         ...estado,
         movimentacoes: estado.movimentacoes.filter((m) => m.id !== acao.id),
+      }
+    case 'produto/cadastrado':
+      return {
+        produtos: [...estado.produtos, acao.produto],
+        movimentacoes: [...estado.movimentacoes, acao.compraInicial],
       }
   }
 }
