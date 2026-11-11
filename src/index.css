@@ -1,1 +1,76 @@
 @import "tailwindcss";
+
+/* Tokens extraídos do Figma (frames 13:138, 13:353, 16:992). Nome do Figma nos comentários. */
+@theme {
+  /* Remove a paleta padrão do Tailwind: só cores do Figma */
+  --color-*: initial;
+
+  /* Fundos */
+  --color-page: #f6f5f2; /* fundo da página (sem variável) */
+  --color-surface: #ffffff; /* bg-surface */
+  --color-surface-muted: #faf9f7; /* cabeçalho de tabela (sem variável) */
+  --color-inverse: #1c1b1f; /* bg-inverse */
+
+  /* Marca */
+  --color-brand: #4a2d7a; /* bg-brand, text-brand, icon-brand */
+  --color-brand-subtle: #efe9f7; /* bg-brand-subtle */
+  --color-brand-soft: #cdbee6; /* barras do gráfico (sem variável) */
+
+  /* Bordas */
+  --color-line: #e4e2dc; /* border-default */
+  --color-line-subtle: #efede8; /* divisória de linhas (sem variável) */
+  --color-line-input: #d4d1ca; /* border-input */
+
+  /* Texto e ícones */
+  --color-fg: #1c1b1f; /* text-primary */
+  --color-fg-muted: #5f5c66; /* text-secondary, icon-default */
+  --color-fg-inverse: #ffffff; /* text-inverse */
+
+  /* Status */
+  --color-success: #1e7347; /* text-success */
+  --color-warning: #a34b06; /* text-warning, border-warning */
+  --color-warning-subtle: #fbede1; /* bg-warning-subtle */
+  --color-danger: #b42318; /* text-danger, border-danger */
+  --color-danger-subtle: #fcebe9; /* derivado de danger, no padrão de warning-subtle (não existe no Figma) */
+
+  /* Tipografia */
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+
+  --text-kpi: 30px; /* Display/KPI */
+  --text-kpi--line-height: 1;
+  --text-kpi--font-weight: 700;
+  --text-title: 20px; /* título da topbar */
+  --text-title--line-height: normal;
+  --text-title--font-weight: 700;
+  --text-heading: 16px; /* título de card */
+  --text-heading--line-height: normal;
+  --text-heading--font-weight: 700;
+  --text-body: 14px; /* Corpo/Padrão; Corpo/Destaque = font-semibold */
+  --text-body--line-height: 20px;
+  --text-label: 13px; /* Rótulo (peso no uso: font-medium ou font-semibold) */
+  --text-label--line-height: 1;
+  --text-caption: 12px; /* Legenda */
+  --text-caption--line-height: 16px;
+
+  /* Raios (radius-full = rounded-full nativo) */
+  --radius-sm: 6px; /* topo das barras do gráfico */
+  --radius-md: 8px; /* radius-md */
+  --radius-lg: 12px; /* radius-lg */
+
+  /* Sombras: o Figma usa só bordas; derivadas de fg para hover de cards e camadas (modal, toast) */
+  --shadow-card: 0 4px 16px -6px rgb(28 27 31 / 0.1);
+  --shadow-overlay: 0 16px 40px -12px rgb(28 27 31 / 0.28);
+
+  /* Espaçamento: escala nativa (1 = 4px). space-2xs 4 = 1, xs 6 = 1.5, sm 8 = 2, md 12 = 3, lg 16 = 4 */
+}
+
+@layer base {
+  body {
+    @apply bg-page font-sans text-body text-fg antialiased;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-brand);
+    outline-offset: 2px;
+  }
+}
